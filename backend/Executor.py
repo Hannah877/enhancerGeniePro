@@ -48,10 +48,16 @@ logger = logging.getLogger('waitress')
 logger.setLevel(logging.INFO)
 
 # exceptions for file verification
+
+
 class TissueMismatchWarning(Warning):
     pass
+
+
 class FewEnhancersWarning(Warning):
     pass
+
+
 class IncorrectFormatError(Exception):
     pass
 
@@ -70,8 +76,10 @@ def my_scheduled_job():
         file_path = os.path.join(directory_path, file)
 
         # get the file's creation time and modified time
-        created_time = datetime.datetime.fromtimestamp(os.path.getctime(file_path))
-        modified_time = datetime.datetime.fromtimestamp(os.path.getmtime(file_path))
+        created_time = datetime.datetime.fromtimestamp(
+            os.path.getctime(file_path))
+        modified_time = datetime.datetime.fromtimestamp(
+            os.path.getmtime(file_path))
 
         # check if the file was created or modified more than 8 minutes ago
         if (current_time - modified_time).total_seconds() > 900 or (current_time - modified_time).total_seconds() > 900:
@@ -123,6 +131,7 @@ def cleanInputFile(inputFilename):
     inputDf.to_csv(rawInputFile, sep="\t", index=False, header=None)
     return rawInputFile
 
+
 def verifyFile(inputFilename, tissue):
     try:
         inputDf = pd.read_csv(inputFilename, sep='\t', header=None)
@@ -144,7 +153,8 @@ def verifyFile(inputFilename, tissue):
     if not tissueInFilename(inputFilename, tissue):
         raise TissueMismatchWarning("Tissue does not appear in filename")
     if inputDf.shape[0] < 50:
-        raise FewEnhancersWarning("It is recommended to include at least 50 enhancers for better results")
+        raise FewEnhancersWarning(
+            "It is recommended to include at least 50 enhancers for better results")
 
 
 # return true if filename contains tissue
@@ -216,7 +226,7 @@ def executeFunc(inputFilename, organ, algorithms, assembly, fp):
         return
     if abcDBfile == "none" and 'abc' in algorithms:
         print("ERROR: Selected tissue does not have working database for activity by contact algorithm. (This "
-               "is a problem with the tissue options in the frontend)\n")
+              "is a problem with the tissue options in the frontend)\n")
     # special case: renal-cortex organ is the only one that doesn't work for both assembly versions!
     if assembly == 'GRCh37' and organ == 'renal-cortex':
         print("ERROR: special case! Assembly GRCh37 does not work for tissue 'renal-cortex'! This is the ONLY tissue "
@@ -241,44 +251,54 @@ def executeFunc(inputFilename, organ, algorithms, assembly, fp):
 
     # run each algorithm in parallel
     if "chiaPet" in algorithms:
-        p1 = Process(target=chromatinLoopBased.startPoint, args=[rawInputFile, chiaDBfile, chiaOutputFile, assembly])
+        p1 = Process(target=chromatinLoopBased.startPoint, args=[
+                     rawInputFile, chiaDBfile, chiaOutputFile, assembly])
         p1.start()
     if "distance" in algorithms:
-        p2 = Process(target=distanceBased.startPoint, args=[rawInputFile, distanceOutputFile, assembly])
+        p2 = Process(target=distanceBased.startPoint, args=[
+                     rawInputFile, distanceOutputFile, assembly])
         p2.start()
     if "eqtl" in algorithms:
         p3 = Process(target=eQTLbased.startPoint,
                      args=[rawInputFile, eqtlDBfile, eqtlHelpDBfile, eqtlOutputFile, assembly])
         p3.start()
     if "abc" in algorithms:
-        p4 = Process(target=abcBased.startPoint, args=[rawInputFile, abcDBfile, abcOutputFile])
+        p4 = Process(target=abcBased.startPoint, args=[
+                     rawInputFile, abcDBfile, abcOutputFile])
         p4.start()
 
     if "chiaPet" in algorithms:
         p1.join()
         if p1.exception:
             if "chromosome sort ordering" in str(p1.exception):
-                raise Exception("The file provided does not belong to the associated organ")
+                raise Exception(
+                    "The file provided does not belong to the associated organ")
             else:
-                raise Exception("Chromatin loop: Something went wrong with the file, please check your upload file")
+                raise Exception(
+                    "Chromatin loop: Something went wrong with the file, please check your upload file")
     if "distance" in algorithms:
         p2.join()
         if p2.exception:
             if "chromosome sort ordering" in str(p2.exception):
-                raise Exception("The file provided does not belong to the associated organ")
+                raise Exception(
+                    "The file provided does not belong to the associated organ")
             else:
-                raise Exception("Distance: Something went wrong with the file, please check your upload file")
+                raise Exception(
+                    "Distance: Something went wrong with the file, please check your upload file")
     if "eqtl" in algorithms:
         if p3.exception:
             if "chromosome sort ordering" in str(p3.exception):
-                raise Exception("The file provided does not belong to the associated organ")
+                raise Exception(
+                    "The file provided does not belong to the associated organ")
             else:
-                raise Exception("eQTL: Something went wrong with the file, please check your upload file")
+                raise Exception(
+                    "eQTL: Something went wrong with the file, please check your upload file")
         p3.join()
     if "abc" in algorithms:
         if p4.exception:
             if "chromosome sort ordering" in str(p4.exception):
-                raise Exception("The file provided does not belong to the associated organ")
+                raise Exception(
+                    "The file provided does not belong to the associated organ")
             else:
                 raise Exception(
                     "Activity by Contact: Something went wrong with the file, please check your upload file")
@@ -448,7 +468,7 @@ def hello():
 
         if email != '':
             msg = Message('Your enhancerGenie result', sender='enhancergenie@gmail.com',
-                            recipients=[email])
+                          recipients=[email])
             # msg.html = render_template('emailFinal.html', filename=result)
             # TODO: Make hostname based on current server
             msg.body = f"Here is your result: http://localhost:3000/chart_results/{fp}"
@@ -530,16 +550,18 @@ def get_history():
             "tissue": "Liver",
             "algorithms": ["distance", "eqtl"],
             "date": "Dec 13 2:16 PM"
-        },
+    },
         {
             "id": 3,
             "assembly": "GRCh37",
             "tissue": "Liver",
             "algorithms": ["distance", "eqtl"],
             "date": "Dec 13 2:16 PM"
-        })
+    })
 
 # new metadata
+
+
 @app.route("/api/history/metadata", methods=['POST'])
 def get_history_metadata():
     if verify_jwt_in_request(optional=True):
@@ -577,6 +599,7 @@ def get_history_metadata():
         "count": count,
         "results": result,
     })
+
 
 @app.route("/api/history/delete", methods=['POST'])
 def remove_history_item():
@@ -624,7 +647,8 @@ def register():
 
     # store user information
     try:
-        user_collection.insert_one({'username': username, 'password': hashed_password})
+        user_collection.insert_one(
+            {'username': username, 'password': hashed_password})
         return jsonify({'message': 'User registered successfully'}), 200
     except pymongo.errors.PyMongoError as e:
         print(e)
@@ -666,8 +690,8 @@ def download_file():
         return Response(
             file.read(),
             mimetype='application/zip',
-            headers={'Content-Disposition': 'attachment; filename="%s.zip"' % file.name}
+            headers={
+                'Content-Disposition': 'attachment; filename="%s.zip"' % file.name}
         )
     else:
         return {'message': 'File not found'}, 404
-

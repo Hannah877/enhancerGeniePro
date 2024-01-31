@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.api
     image: enhancer-gene-pro-backend
     environment:
-      - CONN_STR=mongodb+srv://jcranney11:ZTjjUF5MxOAWIpwO@cluster1.oydbbaw.mongodb.net/?retryWrites=true&w=majority
+      - CONN_STR=mongodb+srv://hanhan:ZTjj5MAWIp@cluster0.nqpdcka.mongodb.net/?retryWrites=true&w=majority
     ports:
       - "8080:8080"
     volumes:
