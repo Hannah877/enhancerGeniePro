@@ -5,7 +5,7 @@ stages:
 build_images:
   stage: build
   script:
-    - docker-compose build
+    - /usr/local/bin/docker-compose build
   only:
     - main
 
@@ -17,8 +17,8 @@ deploy_to_ec2:
     - ssh -o StrictHostKeyChecking=no ec2-user@3.23.108.127 <<EOF
         cd ./enhancerGenie
         git pull
-        docker-compose down
-        docker-compose up -d
+        /usr/local/bin/docker-compose down
+        /usr/local/bin/docker-compose up -d
       EOF
   only:
     - main
