@@ -1,6 +1,7 @@
 variables:
-  DOCKER_HOST: "unix:///var/run/docker.sock"
-  
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_TLS_CERTDIR: ""
+
 stages:
   - build
   - deploy
@@ -12,6 +13,8 @@ before_script:
 build_images:
   stage: build
   image: docker:20.10.7
+  services:
+    - docker:20.10.7-dind
   script:
     - docker-compose --version
     - docker-compose build
