@@ -2,6 +2,10 @@ stages:
   - build
   - deploy
 
+before_script:
+  - env
+  - docker info
+  
 build_images:
   stage: build
   image: docker:20.10.7
