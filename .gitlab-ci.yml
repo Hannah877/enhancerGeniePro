@@ -2,14 +2,12 @@ stages:
   - build
   - deploy
 
-before_script:
-  - docker info
-  - docker-compose --version
-
 build_images:
   stage: build
   image: docker:20.10.7
   script:
+    - docker info
+    - docker-compose --version
     - docker-compose build
   only:
     - main
