@@ -2,10 +2,22 @@ stages:
   - build
   - deploy
 
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - docker info
+  - docker-compose --version
+
 build_images:
   stage: build
   script:
-    - /usr/local/bin/docker-compose build
+    - docker-compose build
   only:
     - main
 
@@ -17,8 +29,8 @@ deploy_to_ec2:
     - ssh -o StrictHostKeyChecking=no ec2-user@3.23.108.127 <<EOF
         cd ./enhancerGenie
         git pull
-        /usr/local/bin/docker-compose down
-        /usr/local/bin/docker-compose up -d
+        docker-compose down
+        docker-compose up -d
       EOF
   only:
     - main
