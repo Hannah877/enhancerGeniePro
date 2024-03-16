@@ -2,16 +2,12 @@ stages:
   - build
   - deploy
 
-services:
-  - docker:dind
-
 variables:
-  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_HOST: "unix:///var/run/docker.sock"
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
 before_script:
-  - apk add --no-cache docker-compose
   - docker info
   - docker-compose --version
 
@@ -30,7 +26,7 @@ deploy_to_ec2:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
     - ssh -o StrictHostKeyChecking=no ec2-user@3.23.108.127 <<EOF
-        cd ./enhancerGenie
+        cd ./myproject
         git pull
         docker-compose down
         docker-compose up -d
