@@ -2,11 +2,6 @@ stages:
   - build
   - deploy
 
-variables:
-  DOCKER_HOST: "unix:///var/run/docker.sock"
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-
 before_script:
   - docker info
   - docker-compose --version
@@ -14,6 +9,8 @@ before_script:
 build_images:
   stage: build
   image: docker:20.10.7
+  services:
+    - docker:dind
   script:
     - docker-compose build
   only:
@@ -22,11 +19,16 @@ build_images:
 deploy_to_ec2:
   stage: deploy
   image: docker:20.10.7
-  script:
+  before_script:
+    - apk add --no-cache openssh-client
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - ssh -o StrictHostKeyChecking=no ec2-user@3.23.108.127 <<EOF
-        cd ./myproject
+    - echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H '3.23.108.127' >> ~/.ssh/known_hosts
+  script:
+    - ssh -o StrictHostKeyChecking=no ec2-user@3.23.108.127 'bash -s' <<EOF
+        cd myproject
         git pull
         docker-compose down
         docker-compose up -d
