@@ -6,10 +6,6 @@ build_images:
 deploy_to_gcp:
   stage: deploy
   script:
-    - sudo docker container stop enhancergenie-client-1 || true
-    - sudo docker container stop enhancergenie-api-1 || true
-    - sudo docker rm enhancergenie-client-1 || true
-    - sudo docker rm enhancergenie-api-1 || true
     - sudo docker compose down
     - sudo docker compose up -d
     - sudo docker image prune -af
