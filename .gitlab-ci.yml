@@ -8,8 +8,6 @@ build_images:
   script:
     - docker-compose --version
     - docker-compose build
-  only:
-    - main
 
 deploy_to_gcp:
   stage: deploy
@@ -18,5 +16,3 @@ deploy_to_gcp:
   environment:
     name: production
     url: http://34.174.221.175
-  only:
-    - main
