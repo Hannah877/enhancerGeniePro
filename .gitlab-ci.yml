@@ -8,5 +8,7 @@ deploy_to_gcp:
   script:
     - sudo docker compose down
     - sudo docker compose up -d
+    - sudo docker run -dp 8080:8080 --name enhancergenie-api-1 enhancer-gene-pro-backend
+    - sudo docker run -dp 3000:3000 --name enhancergenie-client-1 enhancer-gene-pro-frontend
     - sudo docker image prune -af
     - sudo docker system prune -f
