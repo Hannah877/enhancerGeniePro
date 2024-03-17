@@ -1,8 +1,7 @@
 build_images:
   stage: build
   script:
-    - docker-compose --version
-    - docker-compose build
+    - docker compose build
 
 deploy_to_gcp:
   stage: deploy
