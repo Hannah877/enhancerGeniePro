@@ -1,7 +1,5 @@
 build_images:
   stage: build
-  before_script:
-  - sudo chmod -R 777 frontend/node_modules
   script:
     - sudo docker compose build
 
