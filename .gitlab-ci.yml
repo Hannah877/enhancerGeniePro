@@ -6,12 +6,13 @@ build_images:
 deploy_to_gcp:
   stage: deploy
   script:
-    - sudo docker container stop enhancer-gene-pro-frontend || true
-    - sudo docker container stop enhancer-gene-pro-backend || true
-    - sudo docker rm enhancer-gene-pro-frontend || true
-    - sudo docker rm enhancer-gene-pro-backend || true
+    - sudo docker container stop enhancergenie-client-1 || true
+    - sudo docker container stop enhancergenie-api-1 || true
+    - sudo docker rm enhancergenie-client-1 || true
+    - sudo docker rm enhancergenie-api-1 || true
+
     - sudo docker compose up -d
-    - sudo docker run -dp 8080:8080 --name enhancer-gene-pro-backend enhancer-gene-pro-backend
-    - sudo docker run -dp 3000:3000 --name enhancer-gene-pro-frontend enhancer-gene-pro-frontend
+    - sudo docker run -dp 8080:8080 --name enhancergenie-api-1 enhancergenie-api-1
+    - sudo docker run -dp 3000:3000 --name enhancergenie-client-1 enhancergenie-client-1
     - sudo docker image prune -af
     - sudo docker system prune -f
