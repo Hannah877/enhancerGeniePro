@@ -42,6 +42,7 @@ app.secret_key = '12345'
 mail = Mail(app)
 
 app.config['JWT_SECRET_KEY'] = 'THIS_IS_SO_PRIVATE'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
 jwt = JWTManager(app)
 
 logger = logging.getLogger('waitress')
@@ -463,8 +464,12 @@ def hello():
 
         chartResult = chart.input_selection_exists(fp)
 
-        if verify_jwt_in_request(optional=True):
+        try:
+            verify_jwt_in_request(optional=True)
             user.insert_fp_to_user_history(get_jwt_identity(), fp)
+        except Exception as e:
+            logger.error(str(e))
+            return jsonify({"status": "error", "message": "Session has expired. Please log in again."}), 401
 
         if email != '':
             msg = Message('Your enhancerGenie result', sender='enhancergenie@gmail.com',
@@ -587,11 +592,19 @@ def get_history_metadata():
         if doc != None:
             oid_str = str(doc['_id'])
             int_val = int(hashlib.sha1(oid_str.encode()).hexdigest(), 16)
+            algorithms = doc["algorithms"]
+            if isinstance(algorithms, str):
+                try:
+                    algorithms = ast.literal_eval(algorithms)
+                except ValueError as e:
+                    algorithms = []
+                    print(f"Error evaluating algorithms: {e}")
+
             result.append({
                 "id": int_val,
                 "assembly": doc["assembly"],
                 "tissue": doc["tissue"],
-                "algorithms": ast.literal_eval(doc["algorithms"]),
+                "algorithms": algorithms,
                 "fingerprint": doc["fingerprint"]
             })
 

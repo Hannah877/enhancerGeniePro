@@ -15,11 +15,8 @@ import AuthContext from "./AuthProvider";
 
 const UploadForm = () => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [tissue, setTissue] = useState("");
-  const [email, setEmail] = useState("");
-  const [assembly, setAssembly] = useState("");
+  const [email, setEmail] = useState(sessionStorage.getItem('email') || "");
   const [file, setFile] = useState(null);
-  const [algorithms, setAlgorithms] = useState([]);
   const [showAlgorithmDropdown, setShowAlgorithmDropdown] = useState(false);
   const [tissueSelectDisabled, setTissueSelectDisabled] = useState(true);
   const [algorithmOptions, setAlgorithmOptions] = useState([]);
@@ -29,13 +26,49 @@ const UploadForm = () => {
   const selectAlgorithmRef = useRef();
   const toast = useToast();
   const navigate = useNavigate();
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
+  const [assembly, setAssembly] = useState("");
+  const [tissue, setTissue] = useState("");
+  const [algorithms, setAlgorithms] = useState([]);
+
+  const options = [
+    { label: "Human GRCh38/hg38", value: "GRCh38" },
+    { label: "Human GRCh37/hg19", value: "GRCh37" },
+  ];
+
+  const getDefaultOptions = (key, fallback) => {
+    const option = sessionStorage.getItem(key);
+    return option ? JSON.parse(option) : fallback;
+  };
+  const optionAssembly = getDefaultOptions('assembly', null);
+  const optionTissue = getDefaultOptions('tissue', null);
+  const optionAlgo = getDefaultOptions('algorithms', []);
 
   useEffect(() => {
     axios
       .get("/api/tissues")
       .then((res) => {
         setAssemblyOptions(res.data);
+
+        // get previous search from session storage
+        if (assemblyOptions) {
+          if (optionAssembly) {
+            const selectedAssembly = res.data.find(a => a.assembly === optionAssembly.value);
+            setAssembly(selectedAssembly.assembly);
+            setTissueSelectDisabled(false);
+            setTissueOptions(selectedAssembly.tissues);
+
+            if (optionTissue) {
+              const selectedTissue = selectedAssembly.tissues.find(t => t.value === optionTissue.value);
+              setTissue(selectedTissue.value);
+              if (selectedTissue) {
+                setShowAlgorithmDropdown(true);
+                setAlgorithmOptions(selectedTissue.supportedAlgorithms);
+                setAlgorithms(optionAlgo);
+              }
+            }
+          } 
+        }
       })
       .catch((reason) => {
         toast({
@@ -49,6 +82,16 @@ const UploadForm = () => {
         });
         setIsProcessing(false);
       });
+  }, []);
+  
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.clear();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   const addHistoryToCache = (fp) => {
@@ -142,17 +185,48 @@ const UploadForm = () => {
         navigate(`/chart_results/${response.data.hash}`);
       })
       .catch((reason) => {
-        toast({
-          title: "Error",
-          description: reason.response.data.message,
-          status: "error",
-          duration: 15000,
-          isClosable: true,
-          position: "top",
-          variant: "left-accent",
-        });
+        if (reason.response && reason.response.status === 401) {
+          toast({
+            title: "Logged out",
+            description: 'Your session has expired. Please log in again.',
+            status: "warning",
+            duration: 15000,
+            isClosable: true,
+            position: "top",
+            variant: "left-accent",
+          });
+          setAuth({});
+          localStorage.removeItem("user");
+          navigate('/login'); 
+        } else {
+          toast({
+            title: "Error",
+            description: reason.response.data.message,
+            status: "error",
+            duration: 15000,
+            isClosable: true,
+            position: "top",
+            variant: "left-accent",
+          });
+        }
         setIsProcessing(false);
       });
+  };
+
+  const handleAssemblySelect = (newValue) => {
+    setAssembly(newValue.value);
+    
+    setTissueOptions(
+      assemblyOptions.find((a) => a.assembly === newValue.value).tissues
+    );
+    setTissueSelectDisabled(false);
+
+    if (tissueOptions.length > 0) {
+      selectTissueRef.current.setValue([]);
+      setTissue("");
+      setShowAlgorithmDropdown(false);
+    }
+    sessionStorage.setItem('assembly', JSON.stringify(newValue));
   };
 
   const handleTissueSelect = (newValue) => {
@@ -165,40 +239,33 @@ const UploadForm = () => {
     if (algorithmOptions && algorithmOptions.length > 0) {
       selectAlgorithmRef.current.setValue([]);
     }
+    sessionStorage.setItem('tissue', JSON.stringify(newValue));
   };
 
-  const handleAssemblySelect = (newValue) => {
-    setAssembly(newValue.value);
-    setTissueOptions(
-      assemblyOptions.find((a) => a.assembly === newValue.value).tissues
-    );
-    setTissueSelectDisabled(false);
+  const handleAlgorithmSelect = (newValue) => {
+    sessionStorage.setItem('algorithms', JSON.stringify(newValue));
+    const selectedAlgorithms = newValue.map((algo) => algo);
+    setAlgorithms(selectedAlgorithms);
+  };
 
-    if (tissueOptions.length > 0) {
-      selectTissueRef.current.setValue([]);
-      setTissue("");
-      setShowAlgorithmDropdown(false);
-    }
+  const handleEmailInput = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    sessionStorage.setItem('email', newEmail);
   };
 
   return (
     <Flex direction="column" mt="10px" mb="50px" width="400px">
       <FormControl>
-        <FormLabel paddingTop="10px" fontSize="lg">Select assembly:</FormLabel>
+        <FormLabel paddingTop="10px" fontSize="lg">
+          Select assembly:
+          </FormLabel>
         <Select
           className="upload-step-assembly"
           placeholder="Select assembly"
           variant="filled"
-          options={[
-            {
-              label: "Human GRCh38/hg38",
-              value: "GRCh38",
-            },
-            {
-              label: "Human GRCh37/hg19",
-              value: "GRCh37",
-            },
-          ]}
+          options={options}
+          value={options.find(opt => opt.value === assembly)}
           onChange={handleAssemblySelect}
         />
 
@@ -210,6 +277,7 @@ const UploadForm = () => {
           placeholder="Select tissue"
           variant="filled"
           options={tissueOptions}
+          value={tissueOptions.find(opt => opt.value === tissue)}
           onChange={handleTissueSelect}
           isDisabled={tissueSelectDisabled}
           ref={selectTissueRef}
@@ -228,10 +296,9 @@ const UploadForm = () => {
             placeholder="Select algorithm(s)"
             variant="filled"
             options={algorithmOptions}
+            value={algorithms}
             colorScheme="blue"
-            onChange={(newValue) =>
-              setAlgorithms(newValue.map((algo) => algo.value))
-            }
+            onChange={handleAlgorithmSelect}
             isDisabled={!showAlgorithmDropdown}
             ref={selectAlgorithmRef}
           />
@@ -248,7 +315,8 @@ const UploadForm = () => {
           variant="filled"
           type="email"
           placeholder="Email address"
-          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          onChange={handleEmailInput}
         />
 
         <FormLabel fontSize="lg" mt="10px">

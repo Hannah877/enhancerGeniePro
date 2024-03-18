@@ -82,12 +82,12 @@ const History = () => {
           if (err.response.status === 401) {
             deleteAccessToken().then((res) => {
               setAuth({});
-              navigate("/home");
+              navigate("/login");
               toast({
                 title: "Logged out",
                 description:
                   "Your login session has expired, please login again.",
-                status: "error",
+                status: "warning",
                 duration: 3000,
                 isClosable: true,
                 position: "top",
