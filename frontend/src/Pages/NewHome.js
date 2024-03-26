@@ -196,7 +196,7 @@ const NewHome = () => {
           paddingTop={"10px"}
           flexDirection="column"
           alignItems="center"
-          overflowY="auto" 
+          overflowY="auto"
         >
           {/* <Text
             textAlign="center"
@@ -225,7 +225,7 @@ const NewHome = () => {
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel pb={4} overflowY="auto">
-                <Text fontSize="14" maxHeight="150px" whiteSpace="pre-wrap">
+                <Text fontSize="14" maxHeight="200px" objectFit="contain" whiteSpace="pre-wrap">
                   {intro}
                 </Text>
               </AccordionPanel>
@@ -282,8 +282,9 @@ const NewHome = () => {
 
         <Flex
           width={{ base: "100%", md: "50%" }}
+          alignItems="flex-start"
           justifyContent="center"
-          alignItems="center"
+          // alignItems="center"
         >
           <UploadForm />
         </Flex>
