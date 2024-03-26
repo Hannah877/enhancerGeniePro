@@ -9,6 +9,7 @@ import {
   Flex,
   Image,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import UploadForm from "../Components/UploadForm";
 import Joyride, { STATUS } from "react-joyride";
@@ -17,7 +18,7 @@ import AuthContext from "../Components/AuthProvider";
 const NewHome = () => {
   const { auth } = useContext(AuthContext);
   const [run, setRun] = useState(false);
-
+  
   useEffect(() => {
     fetch("/api/test")
       .then((res) => res.json())
@@ -125,6 +126,35 @@ const NewHome = () => {
     },
   ];
 
+  const intro = `Welcome to Enhancer Genie, your gateway to unveiling the intricate dance `+
+  `between enhancers and genes. At Enhancer Genie, we empower researchers, clinicians, and `+
+  `biotech innovators with the tools to navigate the complexities of genetic regulation, `+
+  `unlocking potential breakthroughs in therapy and understanding of human biology.\n\n`+
+  `**Harness the Power of Advanced Genetic Insights**\n\n`+
+  `Enhancer Genie offers a comprehensive suite of analytical tools designed to illuminate `+
+  `the interactions that drive gene expression:\n\n`+
+  `### 1. **Spatial Analysis for Interaction Prediction**\n\n`+
+  `Our spatial analysis feature employs sophisticated algorithms to predict enhancer-gene `+
+  `interactions based on their proximity within the genome. This powerful approach allows you `+
+  `to visualize the network of potential interactions, aiding in the identification of promising `+
+  `research and therapeutic targets. Navigate the genomic landscape with ease, pinpointing `+
+  `interactions with precision and confidence.\n\n`+
+  `### 2. **Cutting-Edge Supervised Learning for Enhanced Accuracy**\n\n`+
+  `Step into the future of genetic research with our advanced supervised learning model. `+
+  `Built on a foundation of verified enhancer-gene interactions, this algorithm goes beyond `+
+  `the basics to offer precise predictions about the influence of enhancers on specific genes. `+
+  `By integrating and analyzing complex data sets, our model sheds light on the subtleties of `+
+  `gene regulation, providing insights that drive forward the frontiers of science and medicine.\n\n`+
+  `**Empower Your Research with Enhancer Genie**\n\n`+
+  `Enhancer Genie is not just a platform; it's a revolution in the way we understand and manipulate `+
+  `the genetic code. We're committed to providing the scientific community with the tools needed to `+
+  `explore genetic regulation in unprecedented detail. Whether your goal is to decipher the fundamental `+
+  `principles of gene expression or to pioneer novel therapeutic strategies, Enhancer Genie is your `+
+  `partner in discovery.\n\n`+
+  `**Discover the Possibilities with Enhancer Genie**, and embark on a journey to decode the mysteries `+
+  `of genetics. Innovate, explore, and transform the future of health and biology. Join us, and let's `+
+  `unlock the secrets of the genome together.`;
+  
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
@@ -162,13 +192,14 @@ const NewHome = () => {
         <Box
           width={{ base: "100%", md: "50%" }}
           paddingX="40px"
-          paddingY="0px"
+          // paddingY="0px"
           display="flex"
           paddingTop={"10px"}
           flexDirection="column"
           alignItems="center"
+          overflowY="auto" 
         >
-          <Text
+          {/* <Text
             textAlign="center"
             fontSize="md"
             color="blue.700"
@@ -178,8 +209,32 @@ const NewHome = () => {
             Provide enhancers, and Enhancer Genie will match them to their
             target gene using 4 different methods. Use the generated charts to
             determine which method is the best fit for your enhancer data.
-          </Text>
+          </Text> */}
 
+          <Accordion allowToggle width="90%">
+            <AccordionItem>
+              <h1>
+              <AccordionButton>
+                <Box
+                  flex="1"
+                  textAlign="left"
+                  fontSize={"lg"}
+                  fontWeight={"bold"}
+                  color="blue.700"
+                >
+                  About Our Application
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              </h1>
+              <AccordionPanel pb={4} maxHeight="300px" overflowY="auto">
+                <Text fontSize="14" whiteSpace="pre-wrap">
+                  {intro}
+                </Text>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+          <br/>
           <Text
             textAlign="center"
             my="10px"
