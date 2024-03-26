@@ -191,7 +191,7 @@ const NewHome = () => {
         <Box
           width={{ base: "100%", md: "50%" }}
           paddingX="40px"
-          // paddingY="0px"
+          paddingY="0px"
           display="flex"
           paddingTop={"10px"}
           flexDirection="column"
@@ -212,7 +212,6 @@ const NewHome = () => {
 
           <Accordion allowToggle width="90%">
             <AccordionItem>
-              <h1>
               <AccordionButton>
                 <Box
                   flex="1"
@@ -225,9 +224,8 @@ const NewHome = () => {
                 </Box>
                 <AccordionIcon />
               </AccordionButton>
-              </h1>
-              <AccordionPanel pb={4} maxHeight="200px" overflowY="auto">
-                <Text fontSize="14" whiteSpace="pre-wrap">
+              <AccordionPanel pb={4} overflowY="auto">
+                <Text fontSize="14" maxHeight="150px" whiteSpace="pre-wrap">
                   {intro}
                 </Text>
               </AccordionPanel>
