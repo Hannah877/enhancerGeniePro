@@ -129,28 +129,28 @@ const NewHome = () => {
   `between enhancers and genes. At Enhancer Genie, we empower researchers, clinicians, and `+
   `biotech innovators with the tools to navigate the complexities of genetic regulation, `+
   `unlocking potential breakthroughs in therapy and understanding of human biology.\n\n`+
-  `**Harness the Power of Advanced Genetic Insights**\n\n`+
+  `Harness the Power of Advanced Genetic Insights\n\n`+
   `Enhancer Genie offers a comprehensive suite of analytical tools designed to illuminate `+
   `the interactions that drive gene expression:\n\n`+
-  `### 1. **Spatial Analysis for Interaction Prediction**\n\n`+
+  `1. Spatial Analysis for Interaction Prediction\n\n`+
   `Our spatial analysis feature employs sophisticated algorithms to predict enhancer-gene `+
   `interactions based on their proximity within the genome. This powerful approach allows you `+
   `to visualize the network of potential interactions, aiding in the identification of promising `+
   `research and therapeutic targets. Navigate the genomic landscape with ease, pinpointing `+
   `interactions with precision and confidence.\n\n`+
-  `### 2. **Cutting-Edge Supervised Learning for Enhanced Accuracy**\n\n`+
+  `2. Cutting-Edge Supervised Learning for Enhanced Accuracy\n\n`+
   `Step into the future of genetic research with our advanced supervised learning model. `+
   `Built on a foundation of verified enhancer-gene interactions, this algorithm goes beyond `+
   `the basics to offer precise predictions about the influence of enhancers on specific genes. `+
   `By integrating and analyzing complex data sets, our model sheds light on the subtleties of `+
   `gene regulation, providing insights that drive forward the frontiers of science and medicine.\n\n`+
-  `**Empower Your Research with Enhancer Genie**\n\n`+
+  `Empower Your Research with Enhancer Genie\n\n`+
   `Enhancer Genie is not just a platform; it's a revolution in the way we understand and manipulate `+
   `the genetic code. We're committed to providing the scientific community with the tools needed to `+
   `explore genetic regulation in unprecedented detail. Whether your goal is to decipher the fundamental `+
   `principles of gene expression or to pioneer novel therapeutic strategies, Enhancer Genie is your `+
   `partner in discovery.\n\n`+
-  `**Discover the Possibilities with Enhancer Genie**, and embark on a journey to decode the mysteries `+
+  `Discover the Possibilities with Enhancer Genie, and embark on a journey to decode the mysteries `+
   `of genetics. Innovate, explore, and transform the future of health and biology. Join us, and let's `+
   `unlock the secrets of the genome together.`;
 
