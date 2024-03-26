@@ -9,7 +9,6 @@ import {
   Flex,
   Image,
   Text,
-  Textarea,
 } from "@chakra-ui/react";
 import UploadForm from "../Components/UploadForm";
 import Joyride, { STATUS } from "react-joyride";
@@ -154,7 +153,7 @@ const NewHome = () => {
   `**Discover the Possibilities with Enhancer Genie**, and embark on a journey to decode the mysteries `+
   `of genetics. Innovate, explore, and transform the future of health and biology. Join us, and let's `+
   `unlock the secrets of the genome together.`;
-  
+
   const handleJoyrideCallback = (data) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
@@ -227,7 +226,7 @@ const NewHome = () => {
                 <AccordionIcon />
               </AccordionButton>
               </h1>
-              <AccordionPanel pb={4} maxHeight="300px" overflowY="auto">
+              <AccordionPanel pb={4} maxHeight="200px" overflowY="auto">
                 <Text fontSize="14" whiteSpace="pre-wrap">
                   {intro}
                 </Text>
