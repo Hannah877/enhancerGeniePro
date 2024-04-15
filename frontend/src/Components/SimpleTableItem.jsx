@@ -77,23 +77,34 @@ const SimpleTableItem = ({
                 key === "mode" ||
                 key === "interval" ? (
                 <Badge>{value}</Badge>
-              ) : key === "algorithms" ? (
-                value.map((alg) => {
-                  let algorithmText = "";
-                  if (alg === "abc") {
-                    algorithmText = "Activity by Contact";
-                  } else if (alg === "chiaPet") {
-                    algorithmText = "Chromatin Loop";
-                  } else if (alg === "distance") {
-                    algorithmText = "Distance";
-                  } else if (alg === "eqtl") {
-                    algorithmText = "eQTL";
-                  }
-                  return <Badge mx="2px">{algorithmText}</Badge>;
-                })
+              ) : 
+              // key === "algorithms" ? (
+              //   value.map((alg) => {
+              //     let algorithmText = "";
+              //     if (alg === "abc") {
+              //       algorithmText = "Activity by Contact";
+              //     } else if (alg === "chiaPet") {
+              //       algorithmText = "Chromatin Loop";
+              //     } else if (alg === "distance") {
+              //       algorithmText = "Distance";
+              //     } else if (alg === "eqtl") {
+              //       algorithmText = "eQTL";
+              //     }
+              //     return <Badge mx="2px">{algorithmText}</Badge>;
+              //   })
+              // ) : key === "fingerprint" ? undefined : (
+              //   value
+              // )
+              key === "algorithms" ? (
+                value.map((alg, index) => (
+                  <Badge key={index} mx="2px">
+                    {alg.label}
+                  </Badge>
+                ))
               ) : key === "fingerprint" ? undefined : (
                 value
-              )}
+              )
+              }
             </Td>
           );
         })}

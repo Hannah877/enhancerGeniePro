@@ -29,6 +29,14 @@ const History = () => {
   const [resultCount, setResultCount] = useState(0);
   const toast = useToast();
   const { deleteAccessToken } = useAuth();
+  const historyDataWithLocalTimes = historyData.map((h) => {
+    const date = new Date(h.lastUpdated + 'Z');
+    const localTimeString = date.toLocaleString();
+    return {
+      ...h,
+      lastUpdated: localTimeString,
+    };
+  });
 
   useEffect(() => {
     getLocalHistory();
@@ -190,8 +198,8 @@ const History = () => {
       <SimpleTable
         headers={["Assembly", "Tissue", "Algorithms", "Last updated", ""]}
         rowData={
-          historyData &&
-          historyData.map((h) => ({
+          historyDataWithLocalTimes &&
+          historyDataWithLocalTimes.map((h) => ({
             assembly: h.assembly,
             tissue: h.tissue,
             algorithms: h.algorithms,
