@@ -9,8 +9,14 @@ import {
   Flex,
   Image,
   Text,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
 import UploadForm from "../Components/UploadForm";
+import CheckForm from "../Components/CheckForm";
 import Joyride, { STATUS } from "react-joyride";
 import AuthContext from "../Components/AuthProvider";
 
@@ -280,14 +286,56 @@ const NewHome = () => {
           </Accordion>
         </Box>
 
-        <Flex
+      
+        {/* <Flex
           width={{ base: "100%", md: "50%" }}
           alignItems="flex-start"
           justifyContent="center"
-          // alignItems="center"
+          justify="center"
+          align="center"
         >
-          <UploadForm />
+          <Tabs isFitted variant="enclosed" width="100%" mt="10px">
+            <TabList mb="1em">
+              <Tab>placeholder 1</Tab>
+              <Tab>placeholder 2</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <UploadForm />
+              </TabPanel>
+              <TabPanel>
+                
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Flex> */}
+
+        <Flex
+          direction="column" 
+          width={{ base: "100%", md: "50%" }} 
+          align="center"
+          // justifyContent="center"
+          // justify="center" 
+        >
+          <Box width={{ base: "90%", sm: "80%", md: "60%" }} maxWidth="960px">
+          <Tabs isFitted variant="enclosed" width="100%">
+            <TabList>
+              <Tab>placeholder 1</Tab>
+              <Tab>placeholder 2</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <UploadForm />
+              </TabPanel>
+              <TabPanel>
+                <CheckForm />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+          </Box>
         </Flex>
+
+
       </Flex>
     </>
   );

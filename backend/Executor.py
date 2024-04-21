@@ -504,6 +504,23 @@ def hello():
         return jsonify({"status": "error", "message": traceback.format_exc()}), 500
 
 
+@app.route('/api/check', methods=['GET', 'POST'])
+def check():
+    try:
+        enhancerStart = request.form['enhancerStart']
+        enhancerStop = request.form['enhancerStop']
+        genePosition = request.form['genePosition']
+
+        inputString = f"Enhancer Start: {enhancerStart}, Enhancer Stop: {enhancerStop}, Gene Position: {genePosition}"
+
+        return jsonify({"inputString": inputString})
+
+    except Exception as e:
+        logger.error(str(e))
+        flash(str(e), 'error')
+        return jsonify({"status": "error", "message": traceback.format_exc()}), 500
+
+
 @app.route('/api/tissues', methods=['GET'])
 def tissues():
     try:

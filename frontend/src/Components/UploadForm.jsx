@@ -257,7 +257,7 @@ const UploadForm = () => {
   return (
     <Flex direction="column" mt="10px" mb="50px" width="400px">
       <FormControl>
-        <FormLabel paddingTop="10px" fontSize="lg">
+        <FormLabel paddingTop="1px" fontSize="lg">
           Select assembly:
           </FormLabel>
         <Select
