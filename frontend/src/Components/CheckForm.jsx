@@ -60,6 +60,7 @@ const CheckForm = () => {
                     Enhancer Start:
                 </FormLabel>
                 <Input
+                    className="upload-step-enhancer-start"
                     variant="filled"
                     type="text"
                     placeholder="Enhancer Start"
@@ -71,6 +72,7 @@ const CheckForm = () => {
                     Enhancer Stop:
                 </FormLabel>
                 <Input
+                    className="upload-step-enhancer-stop"
                     variant="filled"
                     type="text"
                     placeholder="Enhancer Stop"
@@ -82,6 +84,7 @@ const CheckForm = () => {
                     Gene Position:
                 </FormLabel>
                 <Input
+                    className="upload-step-gene-position"
                     variant="filled"
                     type="text"
                     placeholder="Gene Position"
@@ -92,6 +95,7 @@ const CheckForm = () => {
 
             <Flex direction="column" my="10px" paddingTop="20px" >
                 <Button
+                    className="upload-step-check"
                     colorScheme="blue"
                     onClick={checkInteractions}
                 >
@@ -99,11 +103,11 @@ const CheckForm = () => {
                 </Button>
             </Flex>
 
-            <Text fontSize="lg" mt="10px">
+            <Text className="upload-step-interacts" fontSize="lg" mt="10px">
                 Interacts: {isInteract}
             </Text>
 
-            <Text fontSize="lg" mt="10px">
+            <Text className="upload-step-where" fontSize="lg" mt="10px">
                 Where Interacts: {interactWhere}
             </Text>
 

@@ -23,6 +23,7 @@ import AuthContext from "../Components/AuthProvider";
 const NewHome = () => {
   const { auth } = useContext(AuthContext);
   const [run, setRun] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   
   useEffect(() => {
     fetch("/api/test")
@@ -129,6 +130,36 @@ const NewHome = () => {
         " in the local history. Note: The results will only be accessible when using the same browser on the same device!",
       placement: "bottom",
     },
+    {
+      target: ".upload-step-enhancer-start",
+      content: "enhancer start",
+      placement: "bottom",
+    },
+    {
+      target: ".upload-step-enhancer-stop",
+      content: "enhancer stop",
+      placement: "bottom",
+    },
+    {
+      target: ".upload-step-gene-position",
+      content: "gene position",
+      placement: "bottom",
+    },
+    {
+      target: ".upload-step-check",
+      content: "Click the button to view the results below.",
+      placement: "top",
+    },
+    {
+      target: ".upload-step-interacts",
+      content: "interacts",
+      placement: "top",
+    },
+    {
+      target: ".upload-step-where",
+      content: "where interacts",
+      placement: "top",
+    },
   ];
 
   const intro = `Welcome to Enhancer Genie, your gateway to unveiling the intricate dance `+
@@ -159,13 +190,22 @@ const NewHome = () => {
   `Discover the Possibilities with Enhancer Genie, and embark on a journey to decode the mysteries `+
   `of genetics. Innovate, explore, and transform the future of health and biology. Join us, and let's `+
   `unlock the secrets of the genome together.`;
-
+  
   const handleJoyrideCallback = (data) => {
-    const { status } = data;
+    const { status, type } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       setRun(false);
       localStorage.setItem("isFirstVisit", "false");
     }
+
+    const currentIndex = steps.findIndex((step) => step.target === data?.step?.target);
+    if (status === "running" && type === "step:before" && currentIndex === 6) {
+      setActiveTab(1);
+    }
+  };
+
+  const handleSetActiveTab = (index) => {
+    setActiveTab(index);
   };
 
   return (
@@ -286,30 +326,6 @@ const NewHome = () => {
           </Accordion>
         </Box>
 
-      
-        {/* <Flex
-          width={{ base: "100%", md: "50%" }}
-          alignItems="flex-start"
-          justifyContent="center"
-          justify="center"
-          align="center"
-        >
-          <Tabs isFitted variant="enclosed" width="100%" mt="10px">
-            <TabList mb="1em">
-              <Tab>placeholder 1</Tab>
-              <Tab>placeholder 2</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <UploadForm />
-              </TabPanel>
-              <TabPanel>
-                
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Flex> */}
-
         <Flex
           direction="column" 
           width={{ base: "100%", md: "50%" }} 
@@ -318,7 +334,7 @@ const NewHome = () => {
           // justify="center" 
         >
           <Box width={{ base: "90%", sm: "80%", md: "60%" }} maxWidth="960px">
-          <Tabs isFitted variant="enclosed" width="100%">
+          <Tabs isFitted variant="enclosed" width="100%" index={activeTab} onChange={handleSetActiveTab}>
             <TabList>
               <Tab>placeholder 1</Tab>
               <Tab>placeholder 2</Tab>
