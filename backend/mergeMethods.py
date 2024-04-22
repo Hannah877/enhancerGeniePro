@@ -135,7 +135,8 @@ def enhancerRedundancy(df, title):
 def distanceScores(df, title):
     # sort into bins
     bin_edges = [-1, 0, 1, 2, 3, 4, 5, 6, float('inf')]
-    labels = ['0', '\u2264 1', '\u2264 2', '\u2264 3', '\u2264 4', '\u2264 5', '\u2264 6', '> 6']
+    labels = ['0', '0 < x \u2264 1', '1 < x \u2264 2', '2 < x \u2264 3', '3 < x \u2264 4', '4 < x \u2264 5',
+              '5 < x \u2264 6', 'x > 6']
     df['bins'] = pd.cut(df['dist_score'], bins=bin_edges, labels=labels)
     # count how many results are in each bin
     bin_counts = df['bins'].value_counts()
@@ -160,7 +161,8 @@ def distanceScores(df, title):
 # sort chromatin loop matches into bins based on loop_score
 def chromatinLoopScores(df, title):
     bins = [-1, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, float('inf')]
-    labels = ['\u2264 0.65', '> 0.65', '> 0.7', '> 0.75', '> 0.8', '> 0.85', '> 0.9', '> 0.95']
+    labels = ['x \u2264 0.65', '0.65 < x \u2264 0.7', '0.7 < x \u2264 0.75', '0.75 < x \u2264 0.8',
+              '0.8 < x \u2264 0.85', '0.85 < x \u2264 0.9', '0.9 < x \u2264 0.95', 'x > 0.95']
     df['bins'] = pd.cut(df['loop_score'], bins=bins, labels=labels)
     bin_counts = df['bins'].value_counts()
     # reverse the order of the labels
@@ -187,8 +189,9 @@ def chromatinLoopScores(df, title):
 def eqtlScores(df, title):
     bin_edges = [0, 0.000000025, 0.00000005, 0.0000001, 0.0000002, 0.0000004,
                  0.0000006, 0.0000008, 0.000001, 0.000002, float('inf')]
-    labels = ['\u2264 2.5e-8', '\u2264 5e-8', '\u2264 1e-7', '\u2264 2e-7', '\u2264 4e-7',
-              '\u2264 6e-7', '\u2264 8e-7', '\u2264 1e-6', '\u2264 2e-6', '> 2e-6']
+    labels = ['x \u2264 2.5e-8', '2.5e-8 < x \u2264 5e-8', '5e-8 < x \u2264 1e-7', '1e-7 < x \u2264 2e-7',
+              '2e-7 < x \u2264 4e-7', '4e-7 < x \u2264 6e-7', '6e-7 < x \u2264 8e-7', '8e-7 < x \u2264 1e-6',
+              '1e-6 < x \u2264 2e-6', 'x > 2e-6']
     df['bins'] = pd.cut(df['var_pval'], bins=bin_edges, labels=labels)
     bin_counts = df['bins'].value_counts()
     data = [int(bin_counts[label]) for label in labels]
@@ -212,7 +215,8 @@ def eqtlScores(df, title):
 def eqtlDistanceScores(df, title):
     # sort into bins
     bin_edges = [-1, 0, 1, 2, 3, 4, 5, 6, float('inf')]
-    labels = ['0', '\u2264 1', '\u2264 2', '\u2264 3', '\u2264 4', '\u2264 5', '\u2264 6', '> 6']
+    labels = ['0', '0 < x \u2264 1', '1 < x \u2264 2', '2 < x \u2264 3', '3 < x \u2264 4', '4 < x \u2264 5',
+              '5 < x \u2264 6', 'x > 6']
     df['bins'] = pd.cut(df['dist_score'], bins=bin_edges, labels=labels)
     # count how many results are in each bin
     bin_counts = df['bins'].value_counts()
@@ -237,8 +241,9 @@ def eqtlDistanceScores(df, title):
 # sort abc matches into bins based on ABC_score
 def abcScores(df, title):
     bins = [0, 0.015, 0.0175, 0.02, 0.025, 0.03, 0.04, 0.06, 0.08, 0.1, 0.2, float('inf')]
-    labels = ['\u2264 0.015', '\u2264 0.0175', '\u2264 0.02', '\u2264 0.025', '\u2264 0.03', '\u2264 0.04',
-              '\u2264 0.06', '\u2264 0.08', '\u2264 0.1', '\u2264 0.2', '> 0.2']
+    labels = ['x \u2264 0.015', '0.015 < x \u2264 0.0175', '0.0175 < x \u2264 0.02', '0.02 < x \u2264 0.025',
+              '0.025 < x \u2264 0.03', '0.03 < x \u2264 0.04', '0.04 < x \u2264 0.06', '0.06 < x \u2264 0.08',
+              '0.08 < x \u2264 0.1', '0.1 < x \u2264 0.2', 'x > 0.2']
     df['bins'] = pd.cut(df['ABC_score'], bins=bins, labels=labels)
     bin_counts = df['bins'].value_counts()
     # reverse the order of the labels
