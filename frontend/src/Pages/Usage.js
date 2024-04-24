@@ -25,6 +25,14 @@ function Usage() {
       </Center>
 
       <Flex direction="column" ml={5} gap={5}>
+      <Heading
+          size="lg"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Visualize BED
+        </Heading>
+        
         <Heading
           size="md"
           color="#003073"
@@ -213,7 +221,7 @@ function Usage() {
             </OrderedList>
           </ListItem>
         </UnorderedList>
-        <Flex direction="column" gap={5} mb={20}>
+        <Flex direction="column" gap={5} mb={0}>
         <Heading
           size="md"
           color="#003073"
@@ -256,6 +264,99 @@ function Usage() {
 
         </OrderedList>
         </Flex>
+      </Flex>
+
+      <hr></hr>
+
+      <Flex direction="column" ml={5} gap={5} mb={20}>
+      <Heading
+          size="lg"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Interaction Checker
+        </Heading>
+        
+        <Heading
+          size="md"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Algorithm Overview
+        </Heading>
+
+        <UnorderedList>
+          <ListItem>
+            <Text width={"1300px"} lineHeight="200%">
+              Data Input: The application requires input on the genomic positions of enhancers
+              (start and stop positions) and genes. This data serves as the foundation for 
+              calculating the distance between each gene and enhancer pair.
+            </Text>
+          </ListItem>
+          <ListItem>
+            <Text width={"1300px"} lineHeight="200%">
+              Distance Calculation: For each gene-enhancer pair, the application calculates the 
+              distance in base pairs (bp) between the enhancer's stop position and the gene's 
+              start position. This distance measurement is crucial for predicting potential 
+              interactions and other distance features.
+            </Text>
+          </ListItem>
+          <ListItem>
+            <Text width={"1300px"} lineHeight="200%">
+              Otsu's Algorithm for Threshold Finding: To determine whether a gene and an enhancer
+              interact based on their distance, we apply Otsu's algorithm. This algorithm analyzes
+              the distribution of distance measurements across all gene-enhancer pairs and computes
+              an optimal threshold value that best separates interacting from non-interacting pairs.
+            </Text>
+          </ListItem>
+          <ListItem>
+            <Text width={"1300px"} lineHeight="200%">
+              Threshold Application and Interaction Prediction: The threshold determined by Otsu's 
+              algorithm is then applied to classify each gene-enhancer pair. In our analysis, if the
+              final distance between a gene and enhancer is less than 184,500 base pairs, the pair
+              is predicted to interact.
+            </Text>
+          </ListItem>
+        </UnorderedList>
+
+        <Heading
+          size="md"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Accuracy and Validation
+        </Heading>
+        <Text lineHeight="200%" width={"1300px"}>
+          Our method boasts an impressive accuracy of 98.4% when evaluated against the BENGI gold
+          standard dataset, a highly respected resource in the field of genomics for validating
+          gene-enhancer interaction predictions.
+        </Text>
+
+        <Heading
+          size="md"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Practical Implications
+        </Heading>
+        <Text lineHeight="200%" width={"1300px"}>
+          This predictive model is a powerful tool for researchers and biologists, providing a
+          rapid and accurate means of identifying potential gene-enhancer interactions without
+          the need for extensive laboratory experiments.
+        </Text>
+
+        <Heading
+          size="md"
+          color="#003073"
+          lineHeight="200%"
+        >
+          Usage Guidelines
+        </Heading>
+        <Text lineHeight="200%" width={"1300px"}>
+          Interpret Results: Interacting gene-enhancer pairs are those with distances below the
+          184,500 bp threshold. This information can be used to further explore regulatory 
+          mechanisms and potential therapeutic targets.
+        </Text>
       </Flex>
     </Flex>
   );

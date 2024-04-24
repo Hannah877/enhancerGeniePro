@@ -18,11 +18,24 @@ const CheckForm = () => {
     const [enhancerStop, setEnhancerStop] = useState("");
     const [genePosition, setGenePosition] = useState("");
     const [isInteract, setIsInteract] = useState("");
-    const [interactWhere, setInteractWhere] = useState("");
+    // const [interactWhere, setInteractWhere] = useState("");
     const toast = useToast();
     const { auth, setAuth } = useContext(AuthContext);
 
     const checkInteractions = () => {
+        if (!enhancerStart || !enhancerStop || !genePosition) {
+            toast({
+                title: "Warning",
+                description: "Please fill in all the fields.",
+                status: "warning",
+                duration: 5000,
+                isClosable: true,
+                position: "top",
+                variant: "left-accent",
+            });
+            return;
+        }
+
         let headers = {
             "Content-Type": "multipart/form-data",
           };
@@ -44,18 +57,16 @@ const CheckForm = () => {
         }
         )
         .then((response) => {
-            setInteractWhere(response.data.inputString);
+            setIsInteract(response.data.inputString);
       })
         .catch((error) => {
             console.error("Error fetching input string:", error);
         });
-
-        setIsInteract("Yes");
     };
 
     return (    
         <Flex direction="column" mt="10px" mb="50px" width="400px">
-            <FormControl>
+            <FormControl isRequired>
                 <FormLabel paddingTop="1px" fontSize="lg">
                     Enhancer Start:
                 </FormLabel>
@@ -107,9 +118,9 @@ const CheckForm = () => {
                 Interacts: {isInteract}
             </Text>
 
-            <Text className="upload-step-where" fontSize="lg" mt="10px">
+            {/* <Text className="upload-step-where" fontSize="lg" mt="10px">
                 Where Interacts: {interactWhere}
-            </Text>
+            </Text> */}
 
         </Flex>
     );

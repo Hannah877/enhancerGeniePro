@@ -132,17 +132,17 @@ const NewHome = () => {
     },
     {
       target: ".upload-step-enhancer-start",
-      content: "enhancer start",
+      content: "The genomic start position of the enhancer region, indicating where the enhancer sequence begins on the chromosome.",
       placement: "bottom",
     },
     {
       target: ".upload-step-enhancer-stop",
-      content: "enhancer stop",
+      content: "The genomic end position of the enhancer region, marking where the enhancer sequence concludes on the chromosome.",
       placement: "bottom",
     },
     {
       target: ".upload-step-gene-position",
-      content: "gene position",
+      content: "The specific location of the gene on the chromosome.",
       placement: "bottom",
     },
     {
@@ -152,12 +152,7 @@ const NewHome = () => {
     },
     {
       target: ".upload-step-interacts",
-      content: "interacts",
-      placement: "top",
-    },
-    {
-      target: ".upload-step-where",
-      content: "where interacts",
+      content: "A binary variable indicating whether there is an interaction between the enhancer and the gene.",
       placement: "top",
     },
   ];
@@ -336,8 +331,8 @@ const NewHome = () => {
           <Box width={{ base: "90%", sm: "80%", md: "60%" }} maxWidth="960px">
           <Tabs isFitted variant="enclosed" width="100%" index={activeTab} onChange={handleSetActiveTab}>
             <TabList>
-              <Tab>placeholder 1</Tab>
-              <Tab>placeholder 2</Tab>
+              <Tab>Visualize BED</Tab>
+              <Tab>Interaction Checker</Tab>
             </TabList>
             <TabPanels>
               <TabPanel>

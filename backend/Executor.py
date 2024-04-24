@@ -507,11 +507,18 @@ def hello():
 @app.route('/api/check', methods=['GET', 'POST'])
 def check():
     try:
-        enhancerStart = request.form['enhancerStart']
-        enhancerStop = request.form['enhancerStop']
-        genePosition = request.form['genePosition']
+        enhancerStart = int(request.form['enhancerStart'])
+        enhancerStop = int(request.form['enhancerStop'])
+        genePosition = int(request.form['genePosition'])
 
-        inputString = f"Enhancer Start: {enhancerStart}, Enhancer Stop: {enhancerStop}, Gene Position: {genePosition}"
+        enhancerMid = (enhancerStart + enhancerStop) / 2
+        Interaction_Distance = abs(enhancerMid - genePosition)
+        threshold = 184500
+
+        if Interaction_Distance < threshold:
+            inputString = f"Yes"
+        else:
+            inputString = f"No"
 
         return jsonify({"inputString": inputString})
 
